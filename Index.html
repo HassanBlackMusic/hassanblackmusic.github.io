@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hassan Black Music</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* CSS Variables - Black & Grey Theme */
+        :root {
+            --desktop-bg: hsl(0, 0%, 0%);
+            --taskbar-bg: hsl(0, 0%, 10%);
+            --window-bg: hsl(0, 0%, 15%);
+            --window-border: hsl(0, 0%, 30%);
+            --window-title-bg: hsl(0, 0%, 20%);
+            --window-title-text: hsl(0, 0%, 100%);
+            --text-primary: hsl(0, 0%, 100%);
+            --text-secondary: hsl(0, 0%, 80%);
+            --text-muted: hsl(0, 0%, 60%);
+            --button-bg: hsl(0, 0%, 25%);
+            --button-hover: hsl(0, 0%, 35%);
+            --button-active: hsl(0, 0%, 20%);
+            --accent-color: hsl(340, 65%, 50%);
+            --accent-hover: hsl(340, 75%, 60%);
+            --border-light: hsl(0, 0%, 40%);
+            --border-dark: hsl(0, 0%, 25%);
+            --shadow-color: hsl(0, 0%, 10%);
+            --primary-glow: hsl(340, 75%, 70%);
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.4;
+            color: var(--text-primary);
+            background: var(--desktop-bg);
+            overflow: hidden;
+            height: 100vh;
+            user-select: none;
+        }
+
+        /* Desktop */
+        .os-desktop {
+            min-height: 100vh;
+            background: var(--desktop-bg);
+            position: relative;
+            background-image: 
+                radial-gradient(circle at 25% 25%, transparent 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, transparent 0%, transparent 50%);
+        }
+
+        /* Taskbar */
+        .os-taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 32px;
+            background: var(--taskbar-bg);
+            border-top: 2px solid var(--border-dark);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 8px;
+            box-shadow: inset 0 1px 0 var(--border-light);
+            z-index: 1000;
+        }
+
+        /* Windows */
+        .os-window {
+            position: fixed;
+            background: var(--window-bg);
+            border: 2px solid var(--window-border);
+            min-width: 300px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        .os-window-title {
+            background: var(--window-title-bg);
+            color: var(--window-title-text);
+            padding: 4px 8px;
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: move;
+            user-select: none;
+        }
+
+        .os-window-content {
+            flex: 1;
+            padding: 12px;
+            overflow: auto;
+            background: var(--window-bg);
+        }
+
+        /* Buttons */
+        .os-button {
+            padding: 4px 12px;
+            background: var(--button-bg);
+            border: 1px solid var(--border-dark);
+            color: var(--text-primary);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            user-select: none;
+            box-shadow: inset 1px 1px 0 var(--border-light);
+            font-family: inherit;
+        }
+
+        .os-button:hover {
+            background: var(--button-hover);
+        }
+
+        .os-button:active {
+            background: var(--button-active);
+            box-shadow: inset 1px 1px 2px var(--border-dark);
+        }
+
+        .os-button-accent {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        .os-button-accent:hover {
+            background: var(--accent-hover);
+        }
+
+        /* Icons */
+        .os-icon {
+            width: 64px;
+            height: 64px;
+            background: transparent;
+            border: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s;
+        }
+
+        .os-icon:hover {
+            background: var(--button-hover);
+            box-shadow: 0 0 10px hsla(340, 75%, 70%, 0.5);
+        }
+
+        .os-icon:active {
+            background: var(--button-active);
+        }
+
+        /* Text Styles */
+        .os-text-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+
+        .os-text-body {
+            font-size: 12px;
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .os-text-muted {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Input */
+        .os-input {
+            padding: 4px 8px;
+            border: 1px solid var(--border-dark);
+            background: var(--window-bg);
+            color: var(--text-primary);
+            font-size: 12px;
+            box-shadow: inset 1px 1px 2px var(--border-dark);
+            font-family: inherit;
+        }
+
+        /* Menu */
+        .os-menu {
+            background: var(--window-bg);
+            border: 1px solid var(--border-dark);
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .os-menu-item {
+            padding: 8px 12px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .os-menu-item:hover {
+            background: var(--button-hover);
+        }
+
+        /* Scrollbar */
+        .os-scrollbar {
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-dark) var(--window-bg);
+        }
+
+        .os-scrollbar::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .os-scrollbar::-webkit-scrollbar-track {
+            background: var(--window-bg);
+        }
+
+        .os-scrollbar::-webkit-scrollbar-thumb {
+            background: var(--border-dark);
+            border: 1px solid var(--border-light);
+        }
+
+        /* Iframe */
+        .os-iframe {
+            border: 1px solid var(--border-dark);
+            background: var(--window-bg);
+        }
+
+        /* Pixel Effects */
+        .pixel-text {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            text-shadow: 1px 1px 0 var(--shadow-color);
+            transition: all 0.2s;
+        }
+
+        .pixel-text:hover {
+            transform: scale(1.02);
+            text-shadow: 2px 2px 0 var(--shadow-color);
+        }
+
+        /* Utility Classes */
+        .hidden { display: none; }
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .gap-1 { gap: 4px; }
+        .gap-2 { gap: 8px; }
+        .gap-3 { gap: 12px; }
+        .gap-4 { gap: 16px; }
+        .w-full { width: 100%; }
+        .h-full { height: 100%; }
+        .text-center { text-align: center; }
+        .text-left { text-align: left; }
+        .cursor-pointer { cursor: pointer; }
+        .cursor-move { cursor: move; }
+        .select-none { user-select: none; }
+        .absolute { position: absolute; }
+        .relative { position: relative; }
+        .fixed { position: fixed; }
+        .mb-2 { margin-bottom: 8px; }
+        .mb-4 { margin-bottom: 16px; }
+        .mt-4 { margin-top: 16px; }
+        .p-2 { padding: 8px; }
+        .p-3 { padding: 12px; }
+        .p-4 { padding: 16px; }
+        .px-2 { padding-left: 8px; padding-right: 8px; }
+        .py-1 { padding-top: 4px; padding-bottom: 4px; }
+        .border-t { border-top: 1px solid var(--border-dark); }
+        .border-r { border-right: 1px solid var(--border-dark); }
+        .space-y-1 > * + * { margin-top: 4px; }
+        .space-y-2 > * + * { margin-top: 8px; }
+        .max-h-64 { max-height: 256px; }
+        .overflow-y-auto { overflow-y: auto; }
+        .z-10 { z-index: 10; }
+        .z-50 { z-index: 50; }
+        .z-1000 { z-index: 1000; }
+
+        /* Desktop Title */
+        .desktop-title {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            text-align: right;
+        }
+
+        .desktop-title h1 {
+            font-family: 'Inter', sans-serif;
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-shadow: 1px 1px 0 var(--shadow-color);
+            margin-bottom: 4px;
+        }
+
+        .desktop-subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Social Links */
+        .social-links {
+            position: absolute;
+            bottom: 40px;
+            right: 16px;
+        }
+
+        /* Logo Background */
+        .logo-bg {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23222"/><text x="100" y="100" text-anchor="middle" dominant-baseline="middle" fill="%23666" font-size="24">LOGO</text></svg>');
+            background-size: 200px;
+            background-position: bottom right;
+            background-repeat: no-repeat;
+            background-blend-mode: overlay;
+        }
+    
+        /* Mobile responsive OS */
+        @media (max-width: 768px) {
+            body { overflow:hidden; }
+            .desktop-title {
+                top: 8px;
+                right: 8px;
+                left: 8px;
+                text-align: center;
+            }
+            .desktop-title h1 { font-size: 22px; }
+            .desktop-subtitle { font-size: 11px; }
+            .social-links {
+                right: 8px;
+                bottom: 40px;
+                transform: scale(0.9);
+                transform-origin: bottom right;
+            }
+            .os-window {
+                min-width: 0 !important;
+                width: calc(100vw - 16px) !important;
+                max-width: calc(100vw - 16px) !important;
+                height: calc(100vh - 56px) !important;
+                left: 8px !important;
+                top: 8px !important;
+            }
+        }
+
+</style>
+</head>
+<body>
+    <div id="desktop" class="os-desktop logo-bg">
+        <!-- Desktop Title -->
+        <div class="desktop-title">
+            <h1 class="pixel-text">Hassan Black Music</h1>
+            <div class="desktop-subtitle">Navigate the sound. Explore the music.</div>
+        </div>
+
+        <!-- Desktop Icons -->
+        <div id="musicIcon" class="os-icon absolute" style="left: 16px; top: 16px;">
+            <svg width="32" height="32" viewBox="0 0 32 32" shape-rendering="crispEdges">
+<rect x="8" y="8" width="16" height="16" fill="currentColor"/>
+<rect x="12" y="12" width="8" height="8" fill="black"/>
+<rect x="14" y="14" width="4" height="4" fill="currentColor"/>
+</svg>
+            <div class="os-text-muted" style="font-size: 10px; margin-top: 4px;">Music</div>
+        </div>
+
+        <div id="videosIcon" class="os-icon absolute" style="left: 16px; top: 96px;">
+            <svg width="32" height="32" viewBox="0 0 32 32" shape-rendering="crispEdges">
+<rect x="6" y="6" width="20" height="20" fill="currentColor"/>
+<polygon points="13,11 13,21 22,16" fill="black"/>
+</svg>
+            <div class="os-text-muted" style="font-size: 10px; margin-top: 4px;">Videos</div>
+        </div>
+
+        <div id="artistsIcon" class="os-icon absolute" style="left: 16px; top: 176px;">
+            <svg width="32" height="32" viewBox="0 0 32 32" shape-rendering="crispEdges">
+<rect x="12" y="4" width="8" height="12" fill="currentColor"/>
+<rect x="10" y="16" width="12" height="4" fill="currentColor"/>
+<rect x="14" y="20" width="4" height="8" fill="currentColor"/>
+</svg>
+            <div class="os-text-muted" style="font-size: 10px; margin-top: 4px;">Artist Network</div>
+        </div>
+
+        <div id="gamesIcon" class="os-icon absolute" style="left: 16px; top: 256px;">
+            <svg width="32" height="32" viewBox="0 0 32 32" shape-rendering="crispEdges">
+<rect x="6" y="10" width="20" height="12" fill="currentColor"/>
+<rect x="10" y="14" width="6" height="2" fill="black"/>
+<rect x="12" y="12" width="2" height="6" fill="black"/>
+<rect x="20" y="13" width="2" height="2" fill="black"/>
+<rect x="22" y="15" width="2" height="2" fill="black"/>
+</svg>
+            <div class="os-text-muted" style="font-size: 10px; margin-top: 4px;">Games</div>
+        </div>
+
+        <!-- Social Links -->
+        <div class="social-links">
+            <div class="os-text-muted mb-2" style="font-size: 12px;">Connect With Me:</div>
+            <div class="space-y-1">
+                <a href="https://www.facebook.com/hassanblackmusic" target="_blank" class="os-button flex items-center gap-1" style="display: block; margin-bottom: 4px; text-decoration: none; color: inherit;">
+                    <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                    </svg>
+                    Facebook
+                </a>
+                <a href="https://instagram.com/hassanblackmusic" target="_blank" class="os-button flex items-center gap-1" style="display: block; margin-bottom: 4px; text-decoration: none; color: inherit;">
+                    <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                    </svg>
+                    Instagram
+                </a>
+                <a href="https://www.youtube.com/@hassanblackmusicx" target="_blank" class="os-button flex items-center gap-1" style="display: block; text-decoration: none; color: inherit;">
+                    <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                    </svg>
+                    YouTube
+                </a>
+            </div>
+        </div>
+
+        <!-- Start Menu -->
+        <div id="startMenu" class="os-menu absolute hidden" style="bottom: 40px; left: 8px; width: 200px; padding: 8px; z-index: 50;">
+            <div class="os-text-title mb-2">Applications</div>
+            <div class="space-y-1">
+                <div class="os-menu-item flex items-center gap-2" onclick="openWindow('music')">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+                    </svg>
+                    Music Library
+                </div>
+                <div class="os-menu-item flex items-center gap-2" onclick="openWindow('videos')">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                    </svg>
+                    Video Player
+                </div>
+                <div class="os-menu-item flex items-center gap-2" onclick="openWindow('artists')">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
+                    </svg>
+                    Artists & Info
+                </div>
+                <div class="os-menu-item flex items-center gap-2" onclick="openWindow('games')">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 011-1h1a2 2 0 100-4H7a1 1 0 01-1-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"/>
+                    </svg>
+                    Game Center
+                </div>
+            </div>
+            <div class="border-t mt-2 pt-2">
+                <div class="os-text-muted" style="font-size: 10px;">© 2027 Madd'Shiid Records</div>
+            </div>
+        </div>
+
+        <!-- Taskbar -->
+        <div class="os-taskbar">
+            <div class="flex items-center gap-1">
+                <button class="os-button os-button-accent px-2" onclick="toggleStartMenu()" style="display: flex; align-items: center; gap: 4px;">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                    </svg>
+                    Start
+                </button>
+                
+                <div style="width: 1px; height: 24px; background: var(--border-dark); margin: 0 4px;"></div>
+                
+                <button id="musicTaskbarBtn" class="os-button px-2 hidden" onclick="focusWindow('music')" style="display: none; align-items: center; gap: 4px;">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13"/>
+                    </svg>
+                    <span style="font-size: 12px;">Music</span>
+                </button>
+                
+                <button id="videosTaskbarBtn" class="os-button px-2 hidden" onclick="focusWindow('videos')" style="display: none; align-items: center; gap: 4px;">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14"/>
+                    </svg>
+                    <span style="font-size: 12px;">Videos</span>
+                </button>
+                
+                <button id="artistsTaskbarBtn" class="os-button px-2 hidden" onclick="focusWindow('artists')" style="display: none; align-items: center; gap: 4px;">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1z"/>
+                    </svg>
+                    <span style="font-size: 12px;">Artists Network</span>
+                </button>
+                
+                <button id="gamesTaskbarBtn" class="os-button px-2 hidden" onclick="focusWindow('games')" style="display: none; align-items: center; gap: 4px;">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4"/>
+                    </svg>
+                    <span style="font-size: 12px;">Games</span>
+                </button>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <div class="os-text-muted" id="clock">12:00</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let windows = {};
+        let highestZIndex = 10;
+        let draggedElement = null;
+        let dragOffset = { x: 0, y: 0 };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateClock();
+            setInterval(updateClock, 1000);
+            
+            // Make icons draggable
+            makeIconsDraggable();
+            
+            // Add icon click handlers
+            document.getElementById('musicIcon').onclick = () => openWindow('music');
+            document.getElementById('videosIcon').onclick = () => openWindow('videos');
+            document.getElementById('artistsIcon').onclick = () => openWindow('artists');
+            document.getElementById('gamesIcon').onclick = () => openWindow('games');
+            
+            // Click outside to close start menu
+            document.addEventListener('click', function(e) {
+                const startMenu = document.getElementById('startMenu');
+                const startButton = e.target.closest('.os-button-accent');
+                if (!startMenu.contains(e.target) && !startButton) {
+                    startMenu.classList.add('hidden');
+                }
+            });
+        });
+
+        // Clock
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').textContent = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        }
+
+        // Start Menu
+        function toggleStartMenu() {
+            const startMenu = document.getElementById('startMenu');
+            startMenu.classList.toggle('hidden');
+        }
+
+        // Window Management
+        function openWindow(windowId) {
+            if (windows[windowId]) {
+                focusWindow(windowId);
+                return;
+            }
+
+            const positions = {
+                music: { x: 100, y: 60 },
+                videos: { x: 150, y: 80 },
+                artists: { x: 200, y: 100 },
+                games: { x: 250, y: 120 }
+            };
+
+            const sizes = {
+                music: { width: 700, height: 500 },
+                videos: { width: 650, height: 450 },
+                artists: { width: 600, height: 500 },
+                games: { width: 400, height: 300 }
+            };
+
+            const titles = {
+                music: 'Music Library - Madd\'Shiid Records',
+                videos: 'Video Player - Madd\'Shiid Records',
+                artists: 'Artists & Information - Madd\'Shiid Records',
+                games: 'Game Center - Madd\'Shiid Records'
+            };
+
+            const content = {
+                music: getMusicContent(),
+                videos: getVideosContent(),
+                artists: getArtistsContent(),
+                games: getGamesContent()
+            };
+
+            const windowElement = createWindow(windowId, titles[windowId], content[windowId], positions[windowId], sizes[windowId]);
+            document.getElementById('desktop').appendChild(windowElement);
+            
+            windows[windowId] = windowElement;
+            
+            // Show taskbar button
+            const taskbarBtn = document.getElementById(windowId + 'TaskbarBtn');
+            if (taskbarBtn) {
+                taskbarBtn.style.display = 'flex';
+                taskbarBtn.classList.remove('hidden');
+            }
+            
+            focusWindow(windowId);
+            
+            // Hide start menu
+            document.getElementById('startMenu').classList.add('hidden');
+        }
+
+        function createWindow(id, title, content, position, size) {
+            const windowEl = document.createElement('div');
+            windowEl.className = 'os-window';
+            windowEl.id = id + 'Window';
+            windowEl.style.left = position.x + 'px';
+            windowEl.style.top = position.y + 'px';
+            windowEl.style.width = size.width + 'px';
+            windowEl.style.height = size.height + 'px';
+            windowEl.style.zIndex = ++highestZIndex;
+
+            windowEl.innerHTML = `
+                <div class="os-window-title" onmousedown="startDrag(event, '${id}')">
+                    <span>${title}</span>
+                    <div class="flex items-center gap-1">
+                        <button class="os-button" style="padding: 2px 4px;" onclick="minimizeWindow('${id}')">
+                            <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>
+                            </svg>
+                        </button>
+                        <button class="os-button" style="padding: 2px 4px;" onclick="closeWindow('${id}')">
+                            <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="os-window-content os-scrollbar">
+                    ${content}
+                </div>
+            `;
+
+            windowEl.onclick = () => focusWindow(id);
+            
+            return windowEl;
+        }
+
+        function closeWindow(windowId) {
+            const windowEl = windows[windowId];
+            if (windowEl) {
+                windowEl.remove();
+                delete windows[windowId];
+                
+                // Hide taskbar button
+                const taskbarBtn = document.getElementById(windowId + 'TaskbarBtn');
+                if (taskbarBtn) {
+                    taskbarBtn.style.display = 'none';
+                    taskbarBtn.classList.add('hidden');
+                }
+            }
+        }
+
+        function minimizeWindow(windowId) {
+            const windowEl = windows[windowId];
+            if (windowEl) {
+                windowEl.style.display = 'none';
+            }
+        }
+
+        function focusWindow(windowId) {
+            const windowEl = windows[windowId];
+            if (windowEl) {
+                if (windowEl.style.display === 'none') {
+                    windowEl.style.display = 'flex';
+                }
+                windowEl.style.zIndex = ++highestZIndex;
+                
+                // Update taskbar button state
+                document.querySelectorAll('[id$="TaskbarBtn"]').forEach(btn => {
+                    btn.style.background = '';
+                });
+                const taskbarBtn = document.getElementById(windowId + 'TaskbarBtn');
+                if (taskbarBtn) {
+                    taskbarBtn.style.background = 'var(--button-active)';
+                }
+            }
+        }
+
+        // Drag functionality
+        function startDrag(e, windowId) {
+            e.preventDefault();
+            draggedElement = windows[windowId];
+            const rect = draggedElement.getBoundingClientRect();
+            dragOffset.x = e.clientX - rect.left;
+            dragOffset.y = e.clientY - rect.top;
+            
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', stopDrag);
+        }
+
+        function drag(e) {
+            if (draggedElement) {
+                draggedElement.style.left = (e.clientX - dragOffset.x) + 'px';
+                draggedElement.style.top = (e.clientY - dragOffset.y) + 'px';
+            }
+        }
+
+        function stopDrag() {
+            draggedElement = null;
+            document.removeEventListener('mousemove', drag);
+            document.removeEventListener('mouseup', stopDrag);
+        }
+
+        // Make icons draggable
+        function makeIconsDraggable() {
+            const icons = ['musicIcon', 'videosIcon', 'artistsIcon', 'gamesIcon'];
+            icons.forEach(iconId => {
+                const icon = document.getElementById(iconId);
+                let isDragging = false;
+                let startPos = { x: 0, y: 0 };
+                
+                icon.onmousedown = function(e) {
+                    isDragging = true;
+                    startPos.x = e.clientX - parseInt(icon.style.left || 0);
+                    startPos.y = e.clientY - parseInt(icon.style.top || 0);
+                    e.preventDefault();
+                };
+                
+                document.onmousemove = function(e) {
+                    if (isDragging && e.target.closest('#' + iconId)) {
+                        icon.style.left = (e.clientX - startPos.x) + 'px';
+                        icon.style.top = (e.clientY - startPos.y) + 'px';
+                    }
+                };
+                
+                document.onmouseup = function() {
+                    isDragging = false;
+                };
+            });
+        }
+
+        // Content generators
+        function getMusicContent() {
+            return `
+                <div class="h-full flex">
+                    <div class="border-r border-gray-600 p-2" style="width: 200px; border-right: 1px solid var(--border-dark);">
+                        <div class="os-text-title mb-2">Music Library</div>
+                        <div class="space-y-1">
+                            <button class="os-button w-full text-left" onclick="showAlbums()" style="width: 100%;">Albums & EPs</button>
+                            <button class="os-button w-full text-left" onclick="showInstrumentals()" style="width: 100%;">Instrumentals</button>
+                        </div>
+                        <div class="mt-4">
+                            <div class="os-text-muted mb-2">Select Category</div>
+                        </div>
+                    </div>
+                    <div class="flex-1 p-3">
+                        <div id="musicContent" class="flex items-center justify-center h-full">
+                            <div class="text-center">
+                                <div class="os-text-title mb-2">Madd'Shiid Records</div>
+                                <div class="os-text-muted">Select a category to browse music</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getVideosContent() {
+            return `
+                <div class="h-full flex">
+                    <div class="border-r border-gray-600 p-2" style="width: 200px; border-right: 1px solid var(--border-dark);">
+                        <div class="os-text-title mb-2">Video Library</div>
+                        <div class="space-y-1 max-h-80 overflow-y-auto os-scrollbar">
+                            ${getVideoList()}
+                        </div>
+                    </div>
+                    <div class="flex-1 p-3">
+                        <div id="videoContent" class="flex items-center justify-center h-full">
+                            <div class="text-center">
+                                <div class="os-text-title mb-2">Video Collection</div>
+                                <div class="os-text-muted">Select a video to watch</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getVideoList() {
+            const videos = [
+                { id: "1", title: "Music Video 1", youtubeId: "CskoEIGxw1k" },
+                { id: "2", title: "Music Video 2", youtubeId: "j9ZcmQLiDI8" },
+                { id: "3", title: "Music Video 3", youtubeId: "j9ZcmQLiDI8" },
+                { id: "4", title: "Music Video 4", youtubeId: "mbHERvFGkwU" },
+                { id: "5", title: "Music Video 5", youtubeId: "TefPN-cjIHc" },
+                { id: "6", title: "Music Video 6", youtubeId: "LvR3b2XNdc8" },
+                { id: "7", title: "Music Video 7", youtubeId: "97euSQ8xhaA" },
+                { id: "8", title: "Music Video 8", youtubeId: "tPTru_1i8PE" },
+                { id: "9", title: "Music Video 9", youtubeId: "70i4rBbJPtw" }
+            ];
+            
+            return videos.map(video => `
+                <button class="os-button w-full text-left p-2 flex items-center gap-2" onclick="playVideo('${video.youtubeId}', '${video.title}')" style="width: 100%; justify-content: flex-start;">
+                    <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1.01M15 10h1.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span style="font-size: 11px;">${video.title}</span>
+                </button>
+            `).join('');
+        }
+
+        function playVideo(youtubeId, title) {
+            const content = document.getElementById('videoContent');
+            content.innerHTML = `
+                <div style="width: 100%;">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="os-text-title">${title}</div>
+                        <a href="https://www.youtube.com/watch?v=${youtubeId}" target="_blank" class="os-button flex items-center gap-1" style="text-decoration: none; color: inherit;">
+                            <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                            </svg>
+                            YouTube
+                        </a>
+                    </div>
+                    <iframe src="https://www.youtube.com/embed/${youtubeId}" width="100%" height="315" frameBorder="0" allowFullScreen allow="autoplay; encrypted-media" class="os-iframe"></iframe>
+                </div>
+            `;
+        }
+
+        function getArtistsContent() {
+            return `
+                <div class="h-full flex flex-col">
+                    <div class="flex items-center gap-2 mb-4">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
+                        </svg>
+                        <div class="os-text-title">Artist Directory</div>
+                    </div>
+                    
+                    <div class="flex-1" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div>
+                            <div class="os-text-title mb-2">Our Artists</div>
+                            <div class="space-y-2">
+                                <div class="os-button w-full text-left p-3 cursor-pointer" onclick="selectArtist('Breed XI')" style="width: 100%;">
+                                    <div style="font-weight: bold;">Breed XI</div>
+                                    <div style="font-size: 10px; margin-top: 4px; opacity: 0.8;">Hip-hop artist bringing fresh beats and powerful lyrics to the SA music scene.</div>
+                                </div>
+                                <div class="os-button w-full text-left p-3 cursor-pointer" onclick="selectArtist('Hassan Black')" style="width: 100%;">
+                                    <div style="font-weight: bold;">Hassan Black</div>
+                                    <div style="font-size: 10px; margin-top: 4px; opacity: 0.8;">R&B and Hip-hop fusion artist with a unique sound and style.</div>
+                                </div>
+                                <div class="os-button w-full text-left p-3 cursor-pointer" onclick="selectArtist('HomieLee')" style="width: 100%;">
+                                    <div style="font-weight: bold;">HomieLee</div>
+                                    <div style="font-size: 10px; margin-top: 4px; opacity: 0.8;">Versatile artist exploring the boundaries of modern Hip-hop and R&B.</div>
+                                </div>
+                                <div class="os-button w-full text-left p-3 cursor-pointer" onclick="selectArtist('Caesar_056')" style="width: 100%;">
+                                    <div style="font-weight: bold;">Caesar_056</div>
+                                    <div style="font-size: 10px; margin-top: 4px; opacity: 0.8;">Emerging talent with a distinctive voice in the independent music scene.</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="artistDetails">
+                            <div class="text-center py-8">
+                                <div class="os-text-muted">Select an artist to view details</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 pt-4 border-t" style="border-top: 1px solid var(--border-dark);">
+                        <div class="os-text-title mb-2">Stay Updated</div>
+                        <div class="os-text-body mb-3">Subscribe to our newsletter for the latest releases and artist updates.</div>
+                        <form onsubmit="handleNewsletterSubmit(event)" class="flex gap-2">
+                            <input type="email" placeholder="Enter your email" required class="os-input" style="flex: 1;"/>
+                            <button type="submit" class="os-button-accent os-button flex items-center gap-1">
+                                <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 3.26a2 2 0 001.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                                Subscribe
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <div class="mt-4 pt-4 border-t" style="border-top: 1px solid var(--border-dark);">
+                        <div class="os-text-title mb-2">About Madd'Shiid Records</div>
+                        <div class="os-text-body">
+                            Madd'Shiid Records is South Africa's leading independent music label, redefining Hip Hop, Rock, and R&B. 
+                            We empower visionary artists, push boundaries, and shape the future of SA music. 
+                            Discover the latest releases from South Africa's most exciting independent music label.
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function selectArtist(artistName) {
+            const artists = {
+                'Breed XI': {
+                    name: 'Breed XI',
+                    facebook: 'https://facebook.com/BreedXI',
+                    description: 'Hip-hop artist bringing fresh beats and powerful lyrics to the SA music scene.'
+                },
+                'Hassan Black': {
+                    name: 'Hassan Black',
+                    facebook: 'https://facebook.com/hassanblackza',
+                    description: 'R&B and Hip-hop fusion artist with a unique sound and style.'
+                },
+                'HomieLee': {
+                    name: 'HomieLee',
+                    facebook: 'https://www.facebook.com/share/1AfKE6kEsp/',
+                    description: 'Versatile artist exploring the boundaries of modern Hip-hop and R&B.'
+                },
+                'Caesar_056': {
+                    name: 'Caesar_056',
+                    facebook: 'https://www.facebook.com/profile.php?id=61551409497408&mibextid=ZbWKwL',
+                    description: 'Emerging talent with a distinctive voice in the independent music scene.'
+                }
+            };
+            
+            const artist = artists[artistName];
+            const detailsEl = document.getElementById('artistDetails');
+            
+            detailsEl.innerHTML = `
+                <div>
+                    <div class="os-text-title mb-2">${artist.name}</div>
+                    <div class="os-text-body mb-4">${artist.description}</div>
+                    <a href="${artist.facebook}" target="_blank" class="os-button-accent os-button" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: inherit;">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                        </svg>
+                        Visit Facebook Page
+                    </a>
+                </div>
+            `;
+        }
+
+        function handleNewsletterSubmit(e) {
+            e.preventDefault();
+            alert('Thank you for subscribing to our newsletter!');
+            e.target.reset();
+        }
+
+        function getGamesContent() {
+            return `
+                <div class="h-full flex flex-col p-4">
+                    <div class="text-center mb-6">
+                        <div class="os-text-title mb-2">🎮 Retro Game Center</div>
+                        <div class="os-text-muted">Choose your adventure in the digital realm</div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 12px; max-width: 300px; margin: 0 auto;">
+                        <button class="os-button p-4 text-left transition-all duration-200" onclick="startTapDotGame()" style="text-align: left;">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span style="color: var(--accent-color);">🎯</span>
+                                <span class="os-text-title" style="font-size: 12px;">Tap Moving Dot</span>
+                            </div>
+                            <div class="os-text-muted" style="font-size: 10px;">Click the moving red dot! Get 12 points to win.</div>
+                        </button>
+                        
+                        <button class="os-button p-4 text-left transition-all duration-200" style="text-align: left;" disabled>
+                            <div class="flex items-center gap-3 mb-2">
+                                <span style="color: var(--accent-color);">⚡</span>
+                                <span class="os-text-title" style="font-size: 12px;">Retro Snake</span>
+                            </div>
+                            <div class="os-text-muted" style="font-size: 10px;">Classic snake game. Coming soon!</div>
+                        </button>
+                        
+                        <button class="os-button p-4 text-left transition-all duration-200" style="text-align: left;" disabled>
+                            <div class="flex items-center gap-3 mb-2">
+                                <span style="color: var(--accent-color);">🧩</span>
+                                <span class="os-text-title" style="font-size: 12px;">Block Puzzle</span>
+                            </div>
+                            <div class="os-text-muted" style="font-size: 10px;">Arrange falling blocks. Coming soon!</div>
+                        </button>
+                        
+                        <button class="os-button p-4 text-left transition-all duration-200" style="text-align: left;" disabled>
+                            <div class="flex items-center gap-3 mb-2">
+                                <span style="color: var(--accent-color);">🎮</span>
+                                <span class="os-text-title" style="font-size: 12px;">Retro Pong</span>
+                            </div>
+                            <div class="os-text-muted" style="font-size: 10px;">Classic paddle game. Coming soon!</div>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Game functions
+        let gameState = { score: 0, timeLeft: 60, dotPosition: { x: 50, y: 50 }, gameStartTime: null, gameInterval: null };
+
+        function startTapDotGame() {
+            const gamesWindow = windows['games'];
+            if (!gamesWindow) return;
+            
+            const content = gamesWindow.querySelector('.os-window-content');
+            content.innerHTML = `
+                <div class="h-full relative overflow-hidden" style="background: var(--window-bg);">
+                    <div class="absolute top-2 right-2 z-10 os-button p-2">
+                        Time: <span id="gameTime">60.0</span>s | Score: <span id="gameScore">0</span>
+                    </div>
+                    
+                    <div id="gameDot" class="absolute w-8 h-8 rounded-full cursor-pointer transition-all duration-300 z-10" 
+                         style="background: var(--accent-color); left: 50%; top: 50%; transform: translate(-50%, -50%);"
+                         onclick="handleDotClick()">
+                    </div>
+                    
+                    <div class="absolute bottom-2 left-2 right-2 text-center">
+                        <div class="os-text-muted">Click the moving red dot!</div>
+                        <button class="os-button mt-2" onclick="endGame()">End Game</button>
+                    </div>
+                </div>
+            `;
+            
+            // Initialize game
+            gameState = { score: 0, timeLeft: 60, gameStartTime: Date.now() };
+            
+            // Start game loop
+            gameState.gameInterval = setInterval(() => {
+                updateGame();
+                moveDot();
+            }, 100);
+            
+            setInterval(moveDot, 800);
+        }
+
+        function updateGame() {
+            if (!gameState.gameStartTime) return;
+            
+            const elapsed = (Date.now() - gameState.gameStartTime) / 1000;
+            gameState.timeLeft = Math.max(0, 60 - elapsed);
+            
+            const timeEl = document.getElementById('gameTime');
+            const scoreEl = document.getElementById('gameScore');
+            
+            if (timeEl) timeEl.textContent = gameState.timeLeft.toFixed(1);
+            if (scoreEl) scoreEl.textContent = gameState.score;
+            
+            if (gameState.timeLeft <= 0 || gameState.score >= 12) {
+                endGame();
+            }
+        }
+
+        function moveDot() {
+            const dot = document.getElementById('gameDot');
+            if (!dot) return;
+            
+            const x = Math.random() * 80 + 10;
+            const y = Math.random() * 70 + 15;
+            
+            dot.style.left = x + '%';
+            dot.style.top = y + '%';
+        }
+
+        function handleDotClick() {
+            gameState.score++;
+            if (gameState.score >= 12) {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            if (gameState.gameInterval) {
+                clearInterval(gameState.gameInterval);
+                gameState.gameInterval = null;
+            }
+            
+            const gamesWindow = windows['games'];
+            if (!gamesWindow) return;
+            
+            const content = gamesWindow.querySelector('.os-window-content');
+            const isWin = gameState.score >= 12;
+            
+            content.innerHTML = `
+                <div class="h-full flex flex-col items-center justify-center text-center p-4">
+                    <div class="os-text-title mb-2">${isWin ? '🎉 Victory!' : "⏰ Time's Up!"}</div>
+                    <div class="os-text-body mb-4">Final Score: ${gameState.score}</div>
+                    <div class="flex gap-2">
+                        <button class="os-button-accent os-button" onclick="startTapDotGame()">Play Again</button>
+                        <button class="os-button" onclick="backToGameMenu()">Menu</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function backToGameMenu() {
+            const gamesWindow = windows['games'];
+            if (!gamesWindow) return;
+            
+            const content = gamesWindow.querySelector('.os-window-content');
+            content.innerHTML = getGamesContent();
+        }
+
+        // Music functions
+        function showAlbums() {
+            const musicContent = document.getElementById('musicContent');
+            musicContent.innerHTML = `
+                <div style="width: 100%;">
+                    <div class="os-text-title mb-3">Albums & EPs</div>
+                    <div class="space-y-2">
+                        <div class="os-text-body mb-2" style="border-bottom: 1px solid var(--border-dark); padding-bottom: 4px;">Albums</div>
+                        <iframe src="https://open.spotify.com/embed/album/4mXy0mqlcfBFlu1zHtQ8Xm" width="100%" height="152" frameBorder="0" allowtransparency="true" allow="encrypted-media" class="os-iframe mb-2"></iframe>
+                        <iframe src="https://open.spotify.com/embed/album/7zOv8SBNCBCXeBPW4GR1dS" width="100%" height="152" frameBorder="0" allowtransparency="true" allow="encrypted-media" class="os-iframe mb-2"></iframe>
+                        <iframe src="https://open.spotify.com/embed/album/3zDCFoQHu4NnIRn5xSEh4a" width="100%" height="152" frameBorder="0" allowtransparency="true" allow="encrypted-media" class="os-iframe"></iframe>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showInstrumentals() {
+            const musicContent = document.getElementById('musicContent');
+            musicContent.innerHTML = `
+                <div style="width: 100%;">
+                    <div class="os-text-title mb-3">Instrumentals</div>
+                    <div class="space-y-2">
+                        <iframe src="https://open.spotify.com/embed/album/1ZaSdzkdhI95R2ZzTfNDWR" width="100%" height="152" frameBorder="0" allowtransparency="true" allow="encrypted-media" class="os-iframe mb-2"></iframe>
+                        <iframe src="https://open.spotify.com/embed/album/7rPPqMi2vLOxRxCSZCdsdm" width="100%" height="152" frameBorder="0" allowtransparency="true" allow="encrypted-media" class="os-iframe mb-2"></iframe>
+                        <iframe src="https://open.spotify.com/embed/track/1MoMyYYBjsOE0x8bEN6bag" width="100%" height="152" frameBorder="0" allowtransparency="true" allow="encrypted-media" class="os-iframe"></iframe>
+                    </div>
+                </div>
+            `;
+        }
+    
+// Mobile touch drag + double tap maximize/restore
+let lastTapTime = 0;
+
+function toggleMaximize(windowId){
+    const win = windows[windowId];
+    if(!win) return;
+
+    if(win.dataset.maximized === "true"){
+        win.style.left = win.dataset.prevLeft;
+        win.style.top = win.dataset.prevTop;
+        win.style.width = win.dataset.prevWidth;
+        win.style.height = win.dataset.prevHeight;
+        win.dataset.maximized = "false";
+    } else {
+        win.dataset.prevLeft = win.style.left;
+        win.dataset.prevTop = win.style.top;
+        win.dataset.prevWidth = win.style.width;
+        win.dataset.prevHeight = win.style.height;
+
+        win.style.left = "0px";
+        win.style.top = "0px";
+        win.style.width = window.innerWidth + "px";
+        win.style.height = (window.innerHeight - 32) + "px";
+        win.dataset.maximized = "true";
+    }
+}
+
+const originalCreateWindow = createWindow;
+createWindow = function(id,title,content,position,size){
+    const w = originalCreateWindow(id,title,content,position,size);
+
+    const titleBar = w.querySelector('.os-window-title');
+
+    titleBar.addEventListener('dblclick', () => toggleMaximize(id));
+
+    titleBar.addEventListener('touchstart', function(e){
+        const now = Date.now();
+        if(now - lastTapTime < 300){
+            toggleMaximize(id);
+        }
+        lastTapTime = now;
+
+        const touch = e.touches[0];
+        draggedElement = w;
+        const rect = w.getBoundingClientRect();
+        dragOffset.x = touch.clientX - rect.left;
+        dragOffset.y = touch.clientY - rect.top;
+    }, {passive:true});
+
+    titleBar.addEventListener('touchmove', function(e){
+        if(!draggedElement) return;
+        const touch = e.touches[0];
+        draggedElement.style.left = (touch.clientX - dragOffset.x) + 'px';
+        draggedElement.style.top = (touch.clientY - dragOffset.y) + 'px';
+    }, {passive:true});
+
+    titleBar.addEventListener('touchend', function(){
+        draggedElement = null;
+    });
+
+    return w;
+};
+
+</script>
+</body>
+</html>
