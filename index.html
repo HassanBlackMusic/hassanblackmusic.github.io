@@ -947,17 +947,28 @@
             const detailsEl = document.getElementById('artistDetails');
             
             detailsEl.innerHTML = `
-                <div>
-                    <div class="os-text-title mb-2">${artist.name}</div>
-                    <div class="os-text-body mb-4">${artist.description}</div>
-                    <a href="${artist.facebook}" target="_blank" class="os-button-accent os-button" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: inherit;">
-                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                        </svg>
-                        Visit Facebook Page
-                    </a>
-                </div>
-            `;
+    <div>
+        ${artistName === 'Hassan Black' ? `
+            <div style="text-align: center; margin-bottom: 16px;">
+                <img
+                    src="hassanblack-image.png"
+                    alt="Hassan Black"
+                    style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%; border: 2px solid var(--border-light);"
+                >
+            </div>
+        ` : ''}
+
+        <div class="os-text-title mb-2">${artist.name}</div>
+        <div class="os-text-body mb-4">${artist.description}</div>
+
+        <a href="${artist.facebook}" target="_blank" class="os-button-accent os-button" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: inherit;">
+            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+            </svg>
+            Visit Facebook Page
+        </a>
+    </div>
+`;
         }
 
         function handleNewsletterSubmit(e) {
