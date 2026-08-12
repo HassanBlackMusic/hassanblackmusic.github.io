@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎮 Hungry Worm</title>
+  <link 
+  href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" 
+  rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #000;
+      color: #00ffff;
+    }
+    #theme-toggle {
+      position: fixed;
+      top: 8px;
+      right: 10px;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      fill: #00ffff;
+      filter: drop-shadow(0 0 6px #00ffff);
+      z-index: 10;
+    }
+    #homepage, #game-container {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      min-height: 90vh;
+      padding-top: 10px;
+    }
+    #homepage svg, h1 svg {
+      width: 40px;
+      height: 40px;
+      fill: #00bfff;
+      filter: drop-shadow(0 0 10px #00ffff);
+      cursor: pointer;
+    }
+    canvas {
+      background: #000814;
+      box-shadow: 0 0 20px #00ffff;
+    }
+    #score {
+      margin-top: 10px;
+      font-size: 16px;
+      text-shadow: 0 0 10px #00bfff;
+    }
+    button {
+      background: #00bfff;
+      color: #00ffff;
+      border: none;
+      padding: 10px 20px;
+      margin-top: 8px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #00ffff;
+    }
+    button:hover {
+      background: #004080;
+    }
+    .controls {
+      margin-top: 15px;
+      display: grid;
+      grid-template-columns: 60px 60px 60px;
+      grid-template-rows: 60px 60px 60px;
+      gap: 5px;
+      justify-content: center;
+    }
+    .control-btn {
+      background: #00bfff;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 0 8px #00ffff;
+    }
+    .control-btn:hover {
+      background: #004080;
+    }
+    .control-btn svg {
+      width: 24px;
+      height: 24px;
+      fill: #00ffff;
+    }
+    footer {
+      text-align: center;
+      font-size: 14px;
+      padding: 10px 0;
+      color: #00ffff;
+    }
+    #sc-player-wrapper {
+      display: none;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    #sc-player {
+      border-radius: 8px;
+      width: 220px;
+      height: 40px;
+    }
+    #game-container h1 {
+      font-size: 1.2rem;
+      margin: 4px 0 8px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    #game-container h1 svg {
+      width: 28px;
+      height: 28px;
+    }
+    #game-over-popup {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    #game-over-popup .popup-content {
+      background: #000814;
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      box-shadow: 0 0 20px #00ffff;
+    }
+    #game-over-popup p {
+      color: #00ffff;
+      font-size: 18px;
+      margin: 0 0 10px 0;
+    }
+    .button-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    .button-row button {
+      margin: 0 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Theme Toggle -->
+  <!-- Change SVG inside body -->
+  <div title="Go to Madd'Shiid Records">
+  <svg id="theme-toggle" viewBox="0 0 24 24">
+    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+  </svg>
+</div>
+
+  <!-- Homepage -->
+<!-- Homepage -->
+<div id="homepage">
+  <!-- Show title only on homepage -->
+  <div id="top-title" style="position: fixed; top: 8px; left: 12px; color: #00ffff; font-size: 14px; text-shadow: 0 0 6px #00ffff; z-index: 10; font-weight: bold;">
+  Hungry Worm
+</div>
+
+  <svg onclick="startGame()" viewBox="0 0 24 24">
+    <path d="M21 6.5a2.5 2.5 0 00-2.5-2.5H5.5A2.5 2.5 0 003 6.5v7a3.5 3.5 0 007 0V12h4v1.5a3.5 3.5 0 007 0v-7zM7 9H5v2h2v2h2v-2H9V9H7zm9.5 1.5a1 1 0 110-2 1 1 0 010 2zm2 2a1 1 0 110-2 1 1 0 010 2z"/>
+  </svg>
+</div>
+
+  <!-- Game Container -->
+  <div id="game-container" style="display: none; position: relative;">
+    <!-- Back Arrow -->
+    <svg onclick="goHome()" viewBox="0 0 24 24" style="position: absolute; top: 8px; left: 8px; width: 26px; height: 26px; fill: #00ffff; cursor: pointer;">
+      <path d="M15 18l-6-6 6-6"/>
+    </svg>
+
+    <h1>
+      <svg viewBox="0 0 24 24">
+        <path d="M21 6.5a2.5 2.5 0 00-2.5-2.5H5.5A2.5 2.5 0 003 6.5v7a3.5 3.5 0 007 0V12h4v1.5a3.5 3.5 0 007 0v-7z"/>
+      </svg>
+      Hungry Worm
+    </h1>
+
+    <canvas id="game" width="400" height="400"></canvas>
+    <div id="score">Score: 0 | High Score: 0 | Last: 0</div>
+
+    <!-- Start/Pause Button -->
+    <button onclick="togglePause()">Start / Pause</button>
+
+    <!-- Controls Grid -->
+    <div class="controls">
+      <div></div>
+      <div class="control-btn" onclick="snake.changeDirection('Up')">
+        <svg viewBox="0 0 24 24"><path d="M12 2L5 9h4v8h6V9h4z"/></svg>
+      </div>
+      <div></div>
+      <div class="control-btn" onclick="snake.changeDirection('Left')">
+        <svg viewBox="0 0 24 24"><path d="M2 12l7-7v4h8v6H9v4z"/></svg>
+      </div>
+      <div class="control-btn" onclick="toggleSCPlayer()">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+      <div class="control-btn" onclick="snake.changeDirection('Right')">
+        <svg viewBox="0 0 24 24"><path d="M22 12l-7 7v-4H7v-6h8V5z"/></svg>
+      </div>
+      <div></div>
+      <div class="control-btn" onclick="snake.changeDirection('Down')">
+        <svg viewBox="0 0 24 24"><path d="M12 22l7-7h-4V7H9v8H5z"/></svg>
+      </div>
+      <div></div>
+    </div>
+
+    <!-- Game Over Popup -->
+    <div id="game-over-popup">
+      <div class="popup-content">
+        <p>The beat may go on, but your score doesn't 🙉</p>
+        <div class="button-row">
+          <button onclick="window.location.reload()">Retry</button>
+          <button onclick="window.open('https://youtube.com/playlist?list=PLRS3WPm0ouAM7x0pi8hY857wGwI_O1i-4&si=P-rud47PfnDl1t6O','_blank')">Listen Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Social Icons (White & Near Footer) -->
+<div style="display: flex; justify-content: center; gap: 16px; margin: 30px 0;">
+  <a href="https://facebook.com/maddshiid999" target="_blank" rel="noopener noreferrer" title="Facebook">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="#ffffff" style="filter: drop-shadow(0 0 4px #00ffff);">
+      <path d="M22 12a10 10 0 1 0-11.5 9.9v-7h-2v-3h2v-2c0-2 1.2-3.1 3-3.1.9 0 1.8.1 1.8.1v2h-1c-1 0-1.3.6-1.3 1.3v1.7h2.5l-.4 3h-2v7A10 10 0 0 0 22 12z"/>
+    </svg>
+  </a>
+  <a href="https://instagram.com/maddshiidrecords" target="_blank" rel="noopener noreferrer" title="Instagram">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="#ffffff" style="filter: drop-shadow(0 0 4px #00ffff);">
+      <path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.9.3 2.4.5.6.2 1.1.5 1.6 1 .5.5.8 1 .9 1.6.2.5.4 1.2.5 2.4.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.9-.5 2.4-.2.6-.5 1.1-1 1.6-.5.5-1 .8-1.6.9-.5.2-1.2.4-2.4.5-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.9-.3-2.4-.5a4.7 4.7 0 0 1-1.6-.9 4.7 4.7 0 0 1-.9-1.6c-.2-.5-.4-1.2-.5-2.4C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.3-1.9.5-2.4.2-.6.5-1.1 1-1.6.5-.5 1-.8 1.6-.9.5-.2 1.2-.4 2.4-.5 1.3-.1 1.7-.1 4.9-.1zM12 5.8a6.2 6.2 0 1 0 0 12.4 6.2 6.2 0 0 0 0-12.4zm0 10.2a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.4-10.9a1.4 1.4 0 1 1-2.8 0 1.4 1.4 0 0 1 2.8 0z"/>
+    </svg>
+  </a>
+  <a href="https://youtube.com/@maddshiidrecords" target="_blank" rel="noopener noreferrer" title="YouTube">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="#ffffff" style="filter: drop-shadow(0 0 4px #00ffff);">
+      <path d="M21.8 8s-.2-1.5-.8-2.2c-.8-.8-1.7-.8-2.1-.9C16.5 4.5 12 4.5 12 4.5s-4.5 0-6.9.3c-.4 0-1.3.1-2.1.9C2.4 6.5 2.2 8 2.2 8S2 9.6 2 11.3v1.4C2 14.4 2.2 16 2.2 16s.2 1.5.8 2.2c.8.8 1.9.8 2.3.9 1.7.2 7 .3 7 .3s4.5 0 6.9-.3c.4 0 1.3-.1 2.1-.9.6-.7.8-2.2.8-2.2s.2-1.6.2-3.3v-1.4c0-1.7-.2-3.3-.2-3.3zM10 14.6v-5.2l4.8 2.6-4.8 2.6z"/>
+    </svg>
+  </a>
+</div>
+  <!-- Footer -->
+  <footer>© Madd'Shiid Records</footer>
+
+  <!-- Audio -->
+ <audio id="click-sound" preload="auto" src="abos/click.mp3"></audio>
+<audio id="eat-sound" preload="auto" src="abos/eat.mp3"></audio>
+<audio id="dead-sound" preload="auto" src="abos/dead.mp3"></audio>
+  <audio id="bg-music" src="bg-music.mp3" loop></audio>
+
+  <script>
+  const canvas = document.getElementById('game');
+  const ctx = canvas.getContext('2d');
+  const scale = 20;
+  const rows = canvas.height / scale;
+  const columns = canvas.width / scale;
+  let snake, food, score = 0, running = false, gameLoop;
+  let highScore = localStorage.getItem('highScore') || 0;
+  const eatSound = document.getElementById('eat-sound');
+  const deadSound = document.getElementById('dead-sound');
+  const clickSound = document.getElementById('click-sound');
+
+  function startGame() {
+    clickSound.play();
+    document.getElementById('bg-music').play().catch(err => {});
+    document.getElementById('homepage').style.display = 'none';
+document.getElementById('top-title').style.display = 'none';
+    document.getElementById('game-container').style.display = 'flex';
+  }
+
+  function togglePause() {
+    try { clickSound.play(); } catch (e) { console.log("Click sound failed", e); }
+    if (!snake) {
+      snake = new Snake();
+      food = randomFood();
+      score = 0;
+      updateScore();
+    }
+    if (running) clearInterval(gameLoop);
+    else gameLoop = setInterval(runGame, 150);
+    running = !running;
+  }
+
+  function updateScore() {
+    const lastScore = localStorage.getItem('lastScore') || 0;
+    document.getElementById('score').innerText =
+      `Score: ${score} | High Score: ${highScore} | Last: ${lastScore}`;
+  }
+
+  function randomFood() {
+    const x = Math.floor(Math.random() * columns) * scale;
+    const y = Math.floor(Math.random() * rows) * scale;
+    return { x, y };
+  }
+
+  function Snake() {
+    this.x = 0; this.y = 0;
+    this.xSpeed = scale; this.ySpeed = 0;
+    this.total = 0; this.tail = [];
+
+    this.draw = function () {
+      ctx.fillStyle = "#00ffff";
+      for (let i = 0; i < this.tail.length; i++)
+        drawRoundedRect(ctx, this.tail[i].x, this.tail[i].y, scale, scale, 5);
+      drawRoundedRect(ctx, this.x, this.y, scale, scale, 5);
+    };
+
+    this.update = function () {
+      for (let i = 0; i < this.tail.length - 1; i++)
+        this.tail[i] = this.tail[i + 1];
+      if (this.total >= 1)
+        this.tail[this.total - 1] = { x: this.x, y: this.y };
+      this.x += this.xSpeed; this.y += this.ySpeed;
+      if (this.x >= canvas.width) this.x = 0;
+      if (this.y >= canvas.height) this.y = 0;
+      if (this.x < 0) this.x = canvas.width - scale;
+      if (this.y < 0) this.y = canvas.height - scale;
+    };
+
+    this.changeDirection = function (dir) {
+      if (dir === "Up" && this.ySpeed === 0) { this.xSpeed = 0; this.ySpeed = -scale; }
+      else if (dir === "Down" && this.ySpeed === 0) { this.xSpeed = 0; this.ySpeed = scale; }
+      else if (dir === "Left" && this.xSpeed === 0) { this.xSpeed = -scale; this.ySpeed = 0; }
+      else if (dir === "Right" && this.xSpeed === 0) { this.xSpeed = scale; this.ySpeed = 0; }
+    };
+
+    this.eat = function (food) {
+      if (this.x === food.x && this.y === food.y) {
+        try { eatSound.play(); } catch (e) { console.log("Eat sound failed", e); } this.total++; return true;
+      }
+      return false;
+    };
+
+    this.checkCollision = function () {
+      for (let i = 0; i < this.tail.length; i++) {
+        if (this.x === this.tail[i].x && this.y === this.tail[i].y) {
+          try { deadSound.play(); } catch (e) { console.log("Dead sound failed", e); }
+          if (score > highScore) {
+            highScore = score;
+            localStorage.setItem('highScore', highScore);
+          }
+          localStorage.setItem('lastScore', score);
+          this.total = 0;
+          this.tail = [];
+          score = 0;
+          updateScore();
+          showGameOver();
+        }
+      }
+    };
+  }
+
+  function drawRoundedRect(ctx, x, y, width, height, radius) {
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + width - radius, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+    ctx.lineTo(x + width, y + height - radius);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+    ctx.lineTo(x + radius, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  function showGameOver() {
+    clearInterval(gameLoop);
+    running = false;
+    document.getElementById('game-over-popup').style.display = 'flex';
+  }
+
+  let powerUp = null;
+  let enemy = null;
+  let enemySnake = null;
+  let enemySnakeDir = { x: 1, y: 0 };
+
+  function spawnPowerUp() {
+    powerUp = { x: Math.floor(Math.random() * columns) * scale, y: Math.floor(Math.random() * rows) * scale };
+    setTimeout(() => powerUp = null, 8000);
+  }
+  setInterval(spawnPowerUp, 60000);
+
+  function spawnEnemy() {
+    enemy = { x: Math.floor(Math.random() * columns) * scale, y: Math.floor(Math.random() * rows) * scale };
+    setTimeout(() => enemy = null, 10000);
+  }
+  setInterval(spawnEnemy, 35000);
+
+  function spawnEnemySnake() {
+    enemySnake = {
+      x: Math.floor(Math.random() * columns) * scale,
+      y: Math.floor(Math.random() * rows) * scale,
+      trail: [],
+      length: 3
+    };
+    enemySnakeDir = { x: 1, y: 0 };
+    setTimeout(() => enemySnake = null, 10000);
+  }
+  setInterval(spawnEnemySnake, 35000);
+
+  runGame = function () {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    snake.update();
+    snake.draw();
+
+    // Draw food
+    ctx.fillStyle = "#ff0000";
+    ctx.beginPath();
+    ctx.arc(food.x + scale / 2, food.y + scale / 2, scale / 2 - 2, 0, 2 * Math.PI);
+    ctx.fill();
+
+    if (snake.eat(food)) {
+      food = randomFood();
+      score++;
+      updateScore();
+    }
+
+    // Power-up
+    if (powerUp) {
+      ctx.fillStyle = "#00ff00";
+      ctx.beginPath();
+      ctx.arc(powerUp.x + scale / 2, powerUp.y + scale / 2, scale / 2 - 4, 0, 2 * Math.PI);
+      ctx.fill();
+
+      if (snake.x === powerUp.x && snake.y === powerUp.y) {
+        powerUp = null;
+        score += 5;
+        updateScore();
+      }
+    }
+
+    // Enemy block
+    if (enemy) {
+      ctx.fillStyle = "#800080"; // Purple
+      ctx.beginPath();
+      ctx.arc(enemy.x + scale / 2, enemy.y + scale / 2, scale / 2 - 2, 0, 2 * Math.PI);
+      ctx.fill();
+
+      if (snake.x === enemy.x && snake.y === enemy.y) {
+        enemy = null;
+        score = Math.max(0, score - 2);
+        updateScore();
+      }
+    }
+
+    // Enemy snake
+    if (enemySnake) {
+      // Random movement
+      if (Math.random() < 0.05) {
+        const dirs = [
+          { x: 1, y: 0 }, { x: -1, y: 0 },
+          { x: 0, y: 1 }, { x: 0, y: -1 }
+        ];
+        enemySnakeDir = dirs[Math.floor(Math.random() * dirs.length)];
+      }
+
+      enemySnake.trail.push({ x: enemySnake.x, y: enemySnake.y });
+      while (enemySnake.trail.length > enemySnake.length) {
+        enemySnake.trail.shift();
+      }
+
+      enemySnake.x += enemySnakeDir.x * scale;
+      enemySnake.y += enemySnakeDir.y * scale;
+
+      // Wrap edges
+      if (enemySnake.x >= canvas.width) enemySnake.x = 0;
+      if (enemySnake.x < 0) enemySnake.x = canvas.width - scale;
+      if (enemySnake.y >= canvas.height) enemySnake.y = 0;
+      if (enemySnake.y < 0) enemySnake.y = canvas.height - scale;
+
+      // Draw enemy snake
+      ctx.fillStyle = "#ff69b4"; // Pink
+      for (let segment of enemySnake.trail) {
+        drawRoundedRect(ctx, segment.x, segment.y, scale, scale, 5);
+      }
+
+      // If player hits enemy snake
+      for (let segment of enemySnake.trail) {
+        if (snake.x === segment.x && snake.y === segment.y) {
+          deadSound.play();
+          if (score > highScore) {
+            highScore = score;
+            localStorage.setItem('highScore', highScore);
+          }
+          localStorage.setItem('lastScore', score);
+          snake.total = 0;
+          snake.tail = [];
+          score = 0;
+          updateScore();
+          showGameOver();
+          return;
+        }
+      }
+
+      // If enemy snake hits player (head or tail)
+      for (let i = -1; i < snake.tail.length; i++) {
+        const segment = i === -1 ? { x: snake.x, y: snake.y } : snake.tail[i];
+        if (enemySnake.x === segment.x && enemySnake.y === segment.y) {
+          deadSound.play();
+          if (score > highScore) {
+            highScore = score;
+            localStorage.setItem('highScore', highScore);
+          }
+          localStorage.setItem('lastScore', score);
+          snake.total = 0;
+          snake.tail = [];
+          score = 0;
+          updateScore();
+          showGameOver();
+          return;
+        }
+      }
+    }
+
+    // Snake hits itself
+    snake.checkCollision();
+  };
+
+  window.addEventListener("keydown", (e) => {
+  const direction = e.key.replace("Arrow", "");
+  if (snake) {
+    snake.changeDirection(direction);
+    try { clickSound.play(); } catch (e) { console.log("Key sound failed", e); }
+  }
+});
+  
+
+  function goHome() {
+  document.getElementById('game-container').style.display = 'none';
+  document.getElementById('homepage').style.display = 'flex';
+  document.getElementById('top-title').style.display = 'block';
+}
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+  window.open('https://maddshiidrecords.netlify.app', '_blank');
+});
+  </script>
+</body>
+</html>
