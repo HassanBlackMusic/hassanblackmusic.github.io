@@ -14,7 +14,7 @@
 <link rel="canonical" href="https://hassanblackmusic.github.io/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Hassan Black | South African Hip-Hop, Trap & R&B Producer">
-<meta property="og:description" content="Official website of Hassan Black — independent South African producer, artist and creator.">
+<meta property="og:description" content="Official website of Hassan Black — independent South African music producer and artist.">
 <meta property="og:url" content="https://hassanblackmusic.github.io/">
 <meta property="og:site_name" content="Hassan Black Music">
 <!-- STRUCTURED DATA GOES HERE -->
@@ -327,7 +327,7 @@
         }
 
         .desktop-title h1 {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Arial', sans-serif;
             font-size: 32px;
             font-weight: 600;
             color: var(--text-primary);
@@ -948,15 +948,34 @@
             
             detailsEl.innerHTML = `
     <div>
-        ${artistName === 'Hassan Black' ? `
-            <div style="text-align: center; margin-bottom: 16px;">
-                <img
-                    src="hassanblack-image.png"
-                    alt="Hassan Black"
-                    style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%; border: 2px solid var(--border-light);"
-                >
-            </div>
-        ` : ''}
+        ${
+            artistName === 'Hassan Black' ? `
+                <div style="text-align: center; margin-bottom: 16px;">
+                    <img src="hassanblack-image.jpg" alt="Hassan Black"
+                         style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--border-light);">
+                </div>
+            ` : artistName === 'Breed XI' ? `
+                <div style="text-align: center; margin-bottom: 16px;">
+                    <img src="breedxi.jfif" alt="Breed XI"
+                         style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--border-light);">
+                </div>
+            ` : artistName === 'Caesar_056' ? `
+                <div style="text-align: center; margin-bottom: 16px;">
+                    <img src="caesar056.jpg" alt="Caesar_056"
+                         style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--border-light);">
+                </div>
+            ` : artistName === 'HomieLee' ? `
+                <div style="text-align: center; margin-bottom: 16px;">
+                    <img src="lee.jpg" alt="HomieLee"
+                         style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--border-light);">
+                </div>
+            ` : artistName === 'RockysJam' ? `
+                <div style="text-align: center; margin-bottom: 16px;">
+                    <img src="rockysjam.png" alt="RockysJam"
+                         style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--border-light);">
+                </div>
+            ` : ''
+        }
 
         <div class="os-text-title mb-2">${artist.name}</div>
         <div class="os-text-body mb-4">${artist.description}</div>
