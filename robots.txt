@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: hassanblackmusic.github.io/sitemap.xml
+Sitemap: https://hassanblackmusic.github.io/sitemap.xml
