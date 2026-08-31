@@ -384,6 +384,32 @@
             }
         }
 
+
+        /* =========================
+           COMPACT PLAYLIST WINDOW
+        ========================= */
+        .playlist-window { height: 100%; display: flex; flex-direction: column; gap: 8px; }
+        .playlist-header { display: flex; align-items: center; justify-content: space-between; padding-bottom: 8px; border-bottom: 1px solid var(--border-dark); }
+        .playlist-track-number { font-size: 10px; color: var(--accent-color); }
+        .current-track { display: flex; align-items: center; gap: 10px; padding: 10px; border: 1px solid var(--border-dark); background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0)); }
+        .current-track-icon { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; background: var(--accent-color); color: white; font-size: 12px; flex-shrink: 0; }
+        .current-track-title { font-size: 12px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .current-track-artist { margin-top: 3px; font-size: 10px; color: var(--text-muted); }
+        .playlist-songs { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 3px; padding-right: 3px; }
+        .playlist-song { width: 100%; display: flex; align-items: center; gap: 8px; padding: 7px; background: transparent; border: 1px solid transparent; color: var(--text-primary); font-family: inherit; cursor: pointer; text-align: left; transition: 0.15s; }
+        .playlist-song:hover { background: var(--button-hover); border-color: var(--border-dark); }
+        .playlist-song.active-song { background: var(--button-active); border-left: 3px solid var(--accent-color); }
+        .playlist-number { width: 24px; font-size: 10px; color: var(--text-muted); }
+        .playlist-song-info { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+        .playlist-song-title { font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .playlist-song-artist { margin-top: 2px; font-size: 9px; color: var(--text-muted); }
+        .playlist-play-icon { font-size: 9px; color: var(--accent-color); }
+        .playlist-controls { display: flex; justify-content: center; gap: 6px; padding-top: 8px; border-top: 1px solid var(--border-dark); }
+        .touch-ripple { position: fixed; width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--accent-color); pointer-events: none; transform: translate(-50%, -50%) scale(0); z-index: 99999; animation: touchRipple 0.6s ease-out forwards; }
+        @keyframes touchRipple { 0% { opacity: 0.9; transform: translate(-50%, -50%) scale(0.3); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(2); } }
+        @media (max-width: 768px) {
+            .os-window.playlist-window-mobile { width: min(92vw, 360px) !important; max-width: min(92vw, 360px) !important; height: 430px !important; min-height: 0 !important; left: 50% !important; top: auto !important; bottom: 40px !important; transform: translateX(-50%); }
+        }
 </style>
 </head>
 <body>
@@ -430,6 +456,19 @@
 <rect x="22" y="15" width="2" height="2" fill="black"/>
 </svg>
             <div class="os-text-muted" style="font-size: 10px; margin-top: 4px;">Games</div>
+        </div>
+
+
+
+        <!-- Compact Playlist Icon -->
+        <div id="playlistIcon" class="os-icon absolute" style="left: 16px; top: 336px;">
+            <svg width="32" height="32" viewBox="0 0 32 32" shape-rendering="crispEdges">
+                <rect x="7" y="6" width="18" height="20" fill="currentColor"/>
+                <rect x="10" y="10" width="12" height="2" fill="black"/>
+                <rect x="10" y="15" width="12" height="2" fill="black"/>
+                <rect x="10" y="20" width="7" height="2" fill="black"/>
+            </svg>
+            <div class="os-text-muted" style="font-size: 10px; margin-top: 4px;">Playlist</div>
         </div>
 
         <!-- Social Links -->
@@ -486,7 +525,13 @@
                     Game Center
                 </div>
             </div>
-            <div class="border-t mt-2 pt-2">
+                            <div class="os-menu-item flex items-center gap-2" onclick="openWindow('playlist')">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+                    </svg>
+                    Playlist
+                </div>
+<div class="border-t mt-2 pt-2">
                 <div class="os-text-muted" style="font-size: 10px;">© 2027 Madd'Shiid Records</div>
             </div>
         </div>
@@ -530,6 +575,10 @@
                     </svg>
                     <span style="font-size: 12px;">Games</span>
                 </button>
+
+                <button id="playlistTaskbarBtn" class="os-button px-2 hidden" onclick="focusWindow('playlist')" style="display: none; align-items: center; gap: 4px;">
+                    <span style="font-size: 12px;">Playlist</span>
+                </button>
             </div>
             
             <div class="flex items-center gap-2">
@@ -558,6 +607,7 @@
             document.getElementById('videosIcon').onclick = () => openWindow('videos');
             document.getElementById('artistsIcon').onclick = () => openWindow('artists');
             document.getElementById('gamesIcon').onclick = () => openWindow('games');
+            document.getElementById('playlistIcon').onclick = () => openWindow('playlist');
             
             // Click outside to close start menu
             document.addEventListener('click', function(e) {
@@ -592,32 +642,37 @@
                 music: { x: 100, y: 60 },
                 videos: { x: 150, y: 80 },
                 artists: { x: 200, y: 100 },
-                games: { x: 250, y: 120 }
+                games: { x: 250, y: 120 },
+                playlist: { x: 820, y: 60 }
             };
 
             const sizes = {
                 music: { width: 700, height: 500 },
                 videos: { width: 650, height: 450 },
                 artists: { width: 600, height: 500 },
-                games: { width: 400, height: 300 }
+                games: { width: 400, height: 300 },
+                playlist: { width: 330, height: 430 }
             };
 
             const titles = {
                 music: 'Music Library - Madd\'Shiid Records',
                 videos: 'Video Player - Madd\'Shiid Records',
                 artists: 'Artists & Information - Madd\'Shiid Records',
-                games: 'Game Center - Madd\'Shiid Records'
+                games: 'Game Center - Madd\'Shiid Records',
+                playlist: 'Now Playing - Hassan Black'
             };
 
             const content = {
                 music: getMusicContent(),
                 videos: getVideosContent(),
                 artists: getArtistsContent(),
-                games: getGamesContent()
+                games: getGamesContent(),
+                playlist: getPlaylistContent()
             };
 
             const windowElement = createWindow(windowId, titles[windowId], content[windowId], positions[windowId], sizes[windowId]);
             document.getElementById('desktop').appendChild(windowElement);
+            if (windowId === 'playlist') windowElement.classList.add('playlist-window-mobile');
             
             windows[windowId] = windowElement;
             
@@ -738,7 +793,7 @@
 
         // Make icons draggable
         function makeIconsDraggable() {
-            const icons = ['musicIcon', 'videosIcon', 'artistsIcon', 'gamesIcon'];
+            const icons = ['musicIcon', 'videosIcon', 'artistsIcon', 'gamesIcon', 'playlistIcon'];
             icons.forEach(iconId => {
                 const icon = document.getElementById(iconId);
                 let isDragging = false;
@@ -1192,6 +1247,123 @@ function openDinoChromeGame() {
         </div>
     `;
 }
+
+
+        // Compact Playlist
+        const playlistSongs = [
+            { title: "Song Title 01", artist: "Hassan Black", url: "YOUR-SONG-LINK-HERE" },
+            { title: "Song Title 02", artist: "Hassan Black", url: "YOUR-SONG-LINK-HERE" },
+            { title: "Song Title 03", artist: "Hassan Black", url: "YOUR-SONG-LINK-HERE" },
+            { title: "Song Title 04", artist: "Hassan Black", url: "YOUR-SONG-LINK-HERE" },
+            { title: "Song Title 05", artist: "Hassan Black", url: "YOUR-SONG-LINK-HERE" },
+            { title: "Song Title 06", artist: "Hassan Black", url: "YOUR-SONG-LINK-HERE" },
+            { title: "Song Title 07", artist: "Hassan Black", url: "YOUR-SONG-LINK-HERE" },
+            { title: "Song Title 08", artist: "Hassan Black", url: "YOUR-SONG-LINK-HERE" },
+            { title: "Song Title 09", artist: "Hassan Black", url: "YOUR-SONG-LINK-HERE" },
+            { title: "Song Title 10", artist: "Hassan Black", url: "YOUR-SONG-LINK-HERE" }
+        ];
+
+        let currentPlaylistSong = 0;
+
+        function getPlaylistContent() {
+            return `
+                <div class="playlist-window">
+                    <div class="playlist-header">
+                        <div>
+                            <div class="os-text-title">Hassan Black Playlist</div>
+                            <div class="os-text-muted" style="font-size:10px;">10 Tracks</div>
+                        </div>
+                        <div class="playlist-track-number" id="playlistTrackNumber">${currentPlaylistSong + 1}/10</div>
+                    </div>
+
+                    <div class="current-track">
+                        <div class="current-track-icon">▶</div>
+                        <div style="min-width:0; flex:1;">
+                            <div id="currentTrackTitle" class="current-track-title">${playlistSongs[currentPlaylistSong].title}</div>
+                            <div id="currentTrackArtist" class="current-track-artist">${playlistSongs[currentPlaylistSong].artist}</div>
+                        </div>
+                    </div>
+
+                    <div id="playlistSongs" class="playlist-songs os-scrollbar">${getPlaylistSongs()}</div>
+
+                    <div class="playlist-controls">
+                        <button class="os-button" onclick="previousPlaylistSong()">◀</button>
+                        <button class="os-button os-button-accent" id="playlistPlayButton" onclick="playCurrentSong()">▶ PLAY</button>
+                        <button class="os-button" onclick="nextPlaylistSong()">▶</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getPlaylistSongs() {
+            return playlistSongs.map((song, index) => `
+                <button class="playlist-song ${index === currentPlaylistSong ? 'active-song' : ''}" onclick="selectPlaylistSong(${index})">
+                    <span class="playlist-number">${String(index + 1).padStart(2, '0')}</span>
+                    <span class="playlist-song-info">
+                        <span class="playlist-song-title">${song.title}</span>
+                        <span class="playlist-song-artist">${song.artist}</span>
+                    </span>
+                    <span class="playlist-play-icon">▶</span>
+                </button>
+            `).join('');
+        }
+
+        function selectPlaylistSong(index) {
+            currentPlaylistSong = index;
+            refreshPlaylist();
+            playCurrentSong();
+        }
+
+        function nextPlaylistSong() {
+            currentPlaylistSong = (currentPlaylistSong + 1) % playlistSongs.length;
+            refreshPlaylist();
+        }
+
+        function previousPlaylistSong() {
+            currentPlaylistSong = (currentPlaylistSong - 1 + playlistSongs.length) % playlistSongs.length;
+            refreshPlaylist();
+        }
+
+        function refreshPlaylist() {
+            const songList = document.getElementById('playlistSongs');
+            const currentTitle = document.getElementById('currentTrackTitle');
+            const currentArtist = document.getElementById('currentTrackArtist');
+            const trackNumber = document.getElementById('playlistTrackNumber');
+            if (songList) songList.innerHTML = getPlaylistSongs();
+            if (currentTitle) currentTitle.textContent = playlistSongs[currentPlaylistSong].title;
+            if (currentArtist) currentArtist.textContent = playlistSongs[currentPlaylistSong].artist;
+            if (trackNumber) trackNumber.textContent = `${currentPlaylistSong + 1}/${playlistSongs.length}`;
+        }
+
+        function playCurrentSong() {
+            const song = playlistSongs[currentPlaylistSong];
+            if (song.url && song.url !== 'YOUR-SONG-LINK-HERE') {
+                window.open(song.url, '_blank');
+            } else {
+                alert('Add the music link for ' + song.title);
+            }
+        }
+
+        // Interactive click/touch ripple
+        function createTouchRipple(x, y) {
+            const ripple = document.createElement('div');
+            ripple.className = 'touch-ripple';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            document.body.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        }
+
+        document.addEventListener('click', function(e) {
+            createTouchRipple(e.clientX, e.clientY);
+        });
+
+        document.addEventListener('touchstart', function(e) {
+            const touch = e.touches[0];
+            if (touch) createTouchRipple(touch.clientX, touch.clientY);
+        }, { passive: true });
+
+
         // Music functions
         function showAlbums() {
             const musicContent = document.getElementById('musicContent');
